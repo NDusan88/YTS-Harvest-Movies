@@ -4,7 +4,8 @@ using static YTS.YTSApi;
 namespace YTS
 {
     interface IYTSApi
-    { 
+    {
+        public Root GetMoviePopularDownloads();
         public Root GetMovieBy(string query_term);
         public Root GetMovieDetails(int id);
         public Root GetMovieSuggestions(int id);

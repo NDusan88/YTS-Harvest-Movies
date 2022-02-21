@@ -23,13 +23,14 @@ namespace YTS
                 var jsonString = wc.DownloadString($"https://yts.mx/api/v2/list_movies.json?page=1&limit=50&sort_by=year&order_by=desc");
                 root = JsonSerializer.Deserialize<Root>(jsonString);
                 movie_count = root.Data.MovieCount / 50;
-                while (counter != movie_count)
+                while (counter <= movie_count)
                 {
-                    Thread.Sleep(5000);
+                    Thread.Sleep(1000);
                     jsonString = wc.DownloadString($"https://yts.mx/api/v2/list_movies.json?page={counter}&limit=50&sort_by=year&order_by=desc");
                     root = JsonSerializer.Deserialize<Root>(jsonString);
                     list.Add(root);
                     counter++;
+                    System.Console.WriteLine(counter);
                 }
             }            
             return list;
@@ -48,6 +49,16 @@ namespace YTS
 
             return root;
         }
+        public int GetPages()
+        {
+            using (WebClient wc = new WebClient())
+            {
+                var jsonString = wc.DownloadString($"https://yts.mx/api/v2/list_movies.json");
+                root = JsonSerializer.Deserialize<Root>(jsonString);
+            }
+
+            return root.Data.MovieCount / 50;
+        }
 
         ///<summary>
         ///Get Movie details by movie <paramref name="id"/>
@@ -57,6 +68,17 @@ namespace YTS
             using (WebClient wc = new WebClient())
             {
                 var jsonString = wc.DownloadString($"https://yts.mx/api/v2/movie_details.json?movie_id={id}&with_images=true&with_cast=true");
+                root = JsonSerializer.Deserialize<Root>(jsonString);
+            }
+
+            return root;
+        }
+
+        public Root GetMoviePopularDownloads()
+        {
+            using (WebClient wc = new WebClient())
+            {
+                var jsonString = wc.DownloadString($"https://yts.mx/api/v2/list_movies.json?page=1&limit=50&sort_by=year&order_by=desc");
                 root = JsonSerializer.Deserialize<Root>(jsonString);
             }
 
