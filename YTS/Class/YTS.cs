@@ -39,11 +39,11 @@ namespace YTS
         ///<summary>
         ///Used for movie search, matching on: Movie Title/IMDb Code, Actor Name/IMDb Code, Director Name/IMDb Code
         ///</summary>
-        public Root GetMovieBy(string query_term)
+        public Root GetMovieBy(int page, int limit, string query_term, string genre, string quality, string sort, string order)
         {
             using (WebClient wc = new WebClient())
             {
-                var jsonString = wc.DownloadString($"https://yts.mx/api/v2/list_movies.json?query_term={query_term}");
+                var jsonString = wc.DownloadString($"https://yts.mx/api/v2/list_movies.json?page={page}&limit={limit}&query_term={query_term}&genre={genre}&sort_by={sort}&order_by={order}");
                 root = JsonSerializer.Deserialize<Root>(jsonString);
             }
 
@@ -117,6 +117,7 @@ namespace YTS
 
             return root;
         }
+
 
         public class Cast
         {
